@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}Contact Us{% endblock %}
+{% block extrahead %}
+{% endblock %}
+{% block content %}
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <center><font size="5">
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
+        {{ message }}
+    </li>
+    </font></center>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="well well-sm">
+                <font size = "4"><center> Are you sure you want to Activate the election ? You cannot Edit it once you've activated it</center></font>
+                <br>
+                <form id="Activateform" class="form-horizontal" method="post" action="{% url 'elections:ActivateElection' election_slug=elections.slug %}">
+                     {% csrf_token %}
+                        <div class="form-group">
+                            <div class="col-md-12 text-center">
+                                <button id="ActivateSubmit" type="submit" onclick="submitted()" class="btn btn-primary btn-lg">Activate</button>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+                <div class="form-group">
+                    <div class="col-md-12 text-center">
+                        <button type="submit"  id="cancelbutton" class="btn btn-primary btn-lg">Cancel</button>
+                        <script type="text/javascript">
+                    document.getElementById("cancelbutton").onclick = function () {
+                    location.href = "{% url 'users:dashboard' %}";
+                    };
+                </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% load staticfiles %}
+<script src="{% static 'jquery/blockui.js' %}"></script>
+<script type="text/javascript">
+$(document).ready(function() { 
+    $('#ActivateSubmit').click(function() { 
+        $.blockUI({ css: { 
+            border: 'none', 
+            padding: '15px', 
+            backgroundColor: '#000', 
+            '-webkit-border-radius': '10px', 
+            '-moz-border-radius': '10px', 
+            opacity: .5, 
+            color: '#fff' 
+        } }); 
+ 
+        $('.blockOverlay').attr('title','Click to unblock').click($.unblockUI);
+    }); 
+});
+
+</script>
+
+
+{% endblock %}

@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block title %}
+Edit {{ elections.name }} Voter Emails
+{% endblock %}
+{% block extrahead %}
+
+{% load staticfiles %}
+<!-- Not used now
+<script src="{% static "jquery/jquery-2.1.4.min.js" %}"></script>
+<script src="{% static "bootstrap/js/bootstrap.min.js" %}"></script> -->
+{% endblock %}
+
+{% block content %}
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+  {% endif %}
+<div class="container2">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="well well-sm">
+                <form class="form-horizontal" method="post" action="{% url 'elections:EditElection' election_slug=elections.slug edit_id=EditNumber %}">
+                 {% csrf_token %}
+                 <fieldset>
+                    <legend class="text-center header">Add Voter Emails</legend>
+                    {% for err in form.non_field_errors %}
+                    <div class="form_error_message">{{ err }}</div>
+                    {% endfor %}
+                    
+                    {% for field in form %}
+                    <div class="form-group">
+                        <span class="col-md-1 col-md-offset-2 text-center"></span>
+                        <div class="col-md-8">
+                            {{ field.label }} <br>  
+                            {{ field }} 
+                            {% for err in field.errors %}
+                            <font size="3" color="red">
+                                {{ err }}
+                            </font>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <div class="form-group">
+                        <div class="col-md-12 text-center">
+                            <button type="submit" class="btn btn-primary btn-lg">Save</button>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+            <div class="form-group">
+                <div class="col-md-12 text-center">
+                    <button type="submit"  id="cancelbutton" class="btn btn-primary btn-lg">Cancel</button>
+                    <script type="text/javascript">
+                    document.getElementById("cancelbutton").onclick = function () {
+                        location.href = "{% url 'users:dashboard' %}";
+                    };
+                    </script>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-12 text-center">
+                    <button type="submit"  id="nextbutton" class="btn btn-primary btn-lg">Next</button>
+                    <script type="text/javascript">
+                    document.getElementById("nextbutton").onclick = function () {
+                        location.href = "{% url 'elections:EditElection' election_slug=elections.slug edit_id=EditNumberNext %}";
+                    };
+                    </script>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-12 text-center">
+                    <button type="submit"  id="prevbutton" class="btn btn-primary btn-lg">Previous</button>
+                    <script type="text/javascript">
+                    document.getElementById("prevbutton").onclick = function () {
+                        location.href = "{% url 'elections:EditElection' election_slug=elections.slug edit_id=EditNumberPrevious %}";
+                    };
+                    </script>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+</div>
+
+<style type="text/css">
+.container2 {
+    width: 100%;
+    clear: both;
+}
+.container2 input {
+    width: 100%;
+    clear: both;
+}
+.container2 textarea {
+    resize:horizontal; max-width:800px; min-width:800px;
+}
+
+</style>
+
+
+{% endblock %}

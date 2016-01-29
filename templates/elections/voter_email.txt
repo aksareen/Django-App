@@ -1,0 +1,32 @@
+On behalf of {{ organisation }}, {{ first_name }} {{ last_name }} ({{ user_email }}) invites you to vote in the {{ election_name }}.
+
+The election is described by {{ first_name }} as:
+
+{{ description }}
+
+This election runs from {{ starts }} to {{ ends }}  , Timezone : {{ timezones }}
+
+We are using an online election system to tabulate our votes. You can only vote once and your voting choices will remain anonymous. Do not forward this email unless you want someone else to vote on your behalf. But the OTP will be sent to this email id only.
+
+If you have election questions, feedback or want to be removed from future election lists, please email at {{ user_email }}
+
+For any other queries you can visit the link below:
+http://ivotes.azurewebsites.net/contact
+
+{% if instructions %}
+Additional Instructions --
+
+{{ instructions|safe|striptags }}
+{% endif %}
+
+-=-=-=-=-=-=-=-=-
+To vote, please click on the following link:
+http://ivotes.azurewebsite.net/elections/vote/
+You can also copy and paste the link into your web browser.
+
+Your Voter Id  : {{ voterid }}
+Your Password  : {{ password }}
+
+-=-=-=-=-=-=-=-=-
+Sent by iVote, the easy to use, secure online voting system.
+http://ivotes.azurewebsites.net/

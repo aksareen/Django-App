@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block title %}{{user.username}}&#39;s  Settings{% endblock %}
+{% block extrahead %}
+{% endblock %}
+{% block content %}
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+<div class="container2">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="well well-sm">
+
+                <form class="form-horizontal" method="post" action="{% url 'users:user_settings' %}">
+                   {% csrf_token %}
+                   <fieldset>
+                    <legend class="text-center header"> {{user.username}}&#39;s  Settings</legend>
+                    {% for err in form.non_field_errors %}
+                    <div class="form_error_message">{{ err }}</div>
+                    {% endfor %}
+                    {{ form.media }}
+                    {% for field in form %}
+                    <div class="form-group">
+                        <span class="col-md-1 col-md-offset-2 text-center"></span>
+                        <div class="col-md-8">
+                            {{ field.label }}
+                            {{ field }} 
+                            {% for err in field.errors %}
+                            {{ err }}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    
+                    {% endfor %}
+                <div class="form-group">
+                    <div class="col-md-12 text-center">
+                        <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+        <h7> Email Verified :{% if user.verified_email %} YES </h7><br>{% else %} NO </h7><br>
+        <a href="{% url 'users:verify_email' %}">Verify Email Here</a> {% endif %}
+        <h7> *If you change your email address you have to again verify it </h7>
+      <div class="modal-footer">
+        <div class = "row">
+          <div class="col-md-12">
+          <button class="btn" data-dismiss="modal" id="myButton" aria-hidden="true">Change Password</button>
+          <script type="text/javascript">
+     document.getElementById("myButton").onclick = function () {
+        location.href = "{% url 'users:UpdatePassword' %}";
+    };
+  </script>
+      </div>  
+      </div>
+
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<style type="text/css">
+    .container2 {
+        width: 100%;
+        clear: both;
+    }
+    .container2 input {
+        width: 100%;
+        clear: both;
+    }
+
+
+}
+
+</style>
+
+
+
+{% endblock %}

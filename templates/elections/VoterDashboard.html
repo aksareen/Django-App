@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Voter Dashboard{% endblock %}
+{% block content %}
+{% if messages %}
+
+<ul class="messages">
+    {% for message in messages %}
+    <center><font size="5">
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}{% endif %}
+        {{ message }}
+    </li>
+</font></center>
+{% endfor %}
+</ul>
+{% endif %}
+
+<font> VOTER DASHBOARD</font>
+
+{% endblock %}

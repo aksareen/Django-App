@@ -1,0 +1,1 @@
+ElectionForm.html template contains : ElectionCreationFOrm and ElectionEditDetails Form

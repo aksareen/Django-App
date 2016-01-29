@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+{% block title %}
+{% if editform %}
+Edit Election
+{% else %}
+Create New Election
+{% endif %}
+{% endblock %}
+{% block extrahead %}
+
+{% load staticfiles %}
+<!-- Not used now
+<script src="{% static "jquery/jquery-2.1.4.min.js" %}"></script>
+<script src="{% static "bootstrap/js/bootstrap.min.js" %}"></script>
+-->
+{{ form.media }}
+
+{% endblock %}
+
+{% block content %}
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <center><font size="4">
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
+        {{ message }}
+    </li>
+    </font></center>
+    {% endfor %}
+</ul>
+{% endif %}
+
+
+<div class="container2">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="well well-sm">
+            {% if editform %}
+         <form class="form-horizontal" method="post" action="{% url 'elections:EditElection' election_slug=elections.slug edit_id=EditNumber %}">
+            {% else %}
+                <form class="form-horizontal" method="post" action="{% url 'elections:CreateElection' %}">
+            {% endif %}
+                   {% csrf_token %}
+                   <fieldset>
+                    {% if editform %}
+                    <legend class="text-center header">Edit {{ elections.name }}</legend>
+                    {% else %}
+                    <legend class="text-center header">Create New Election</legend>
+                    {% endif %}
+                    {% for err in form.non_field_errors %}
+                    <div class="form_error_message">{{ err }}</div>
+                    {% endfor %}
+                    {% for field in form %}
+                    <div class="form-group">
+                        <span class="col-md-1 col-md-offset-2 text-center"></span>
+                        <div class="col-md-8">
+                            {{ field.label }}  :  {{ field }} 
+                            {% for err in field.errors %}
+                             <font size="3" color="red">
+                            {{ err }}
+                            </font>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    
+                    {% endfor %}
+                <div class="form-group">
+                    <div class="col-md-12 text-center">
+        
+
+        {% if editform %}
+                        <button type="submit"  class="btn btn-primary btn-lg">Save</button>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+
+                    <div class="form-group">
+                    <div class="col-md-12 text-center">
+                        <button type="submit" id="dashboardbutton" class="btn btn-primary btn-lg">Dashboard</button>
+                        <script type="text/javascript">
+                    document.getElementById("dashboardbutton").onclick = function () {
+                    location.href = "{% url 'users:dashboard' %}";
+                    };
+                </script>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-12 text-center">
+                        <button type="submit"  id="nexbutton" class="btn btn-primary btn-lg">Next</button>
+                        <script type="text/javascript">
+                    document.getElementById("nexbutton").onclick = function () {
+                    location.href = "{% url 'elections:EditElection' election_slug=elections.slug edit_id=EditNumberNext %}";
+                    };
+                </script>
+                    </div>
+                </div>
+
+        {% else %}
+                        <button type="submit"  class="btn btn-primary btn-lg">Submit</button>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+        <div class="form-group">
+                    <div class="col-md-12 text-center">
+                        <button type="submit"  id="cancelbutton" class="btn btn-primary btn-lg">Cancel</button>
+                        <script type="text/javascript">
+                    document.getElementById("cancelbutton").onclick = function () {
+                    location.href = "{% url 'users:dashboard' %}";
+                    };
+                </script>
+                    </div>
+                </div>
+        {% endif %}
+    </div>
+</div>
+</div>
+</div>
+
+<style type="text/css">
+    .container2 {
+        width: 100%;
+        clear: both;
+    }
+    .container2 input {
+        width: 100%;
+        clear: both;
+    }
+    .container2 textarea {
+        resize:horizontal; max-width:800px; min-width:800px;
+    }
+
+    </style>
+
+
+{% endblock %}

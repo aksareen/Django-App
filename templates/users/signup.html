@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block title %}Signup Form{% endblock %}
+{% block extrahead %}
+<script src='https://www.google.com/recaptcha/api.js?hl=en'></script>
+{% endblock %}
+{% block content %}
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+<div class="container2">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="well well-sm">
+
+                <form class="form-horizontal" method="post" action="{% url 'users:signup_form' %}">
+                   {% csrf_token %}
+                   <fieldset>
+                    <legend class="text-center header">Sign Up Form</legend>
+                    {% for err in form.non_field_errors %}
+                    <div class="form_error_message">{{ err }}</div>
+                    {% endfor %}
+                    {% for field in form %}
+                    <div class="form-group">
+                        <span class="col-md-1 col-md-offset-2 text-center"></span>
+                        <div class="col-md-8">
+                            {{ field.label }}
+                            {{ field }} 
+                            {% for err in field.errors %}
+                            {{ err }}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    
+                    {% endfor %}
+
+                    <div class="form-group">
+                        <span class="col-md-1 col-md-offset-2 text-center"></i></span>
+                        <div class="col-md-8">
+                         <div class="g-recaptcha" data-sitekey="6LcmmgwTAAAAAAjTdm709wN2xlBzAgND9hMPQnpU"></div>
+                     </div>
+                 </div>
+                 {% if Captcha_Error %}
+                 <div class="alert alert-error">
+                    <span class="col-md-1 col-md-offset-2 text-center"></i></span>
+                    <strong>{{ Captcha_Error }}</strong>
+                </div>
+                {% endif %}
+                <div class="form-group">
+                    <div class="col-md-12 text-center">
+                        <button type="submit" id="submitbutton" class="btn btn-primary btn-lg">Submit</button>
+                    </div>
+                </div>
+                <div class="col-md-12 text-center">
+                <button class="btn" data-dismiss="modal" id="cancelbutton" aria-hidden="true">Cancel</button>
+                <script type="text/javascript">
+                    document.getElementById("cancelbutton").onclick = function () {
+                    location.href = "{% url 'user_login' %}";
+                    };
+                </script>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+</div>
+</div>
+
+<style type="text/css">
+    .container2 {
+        width: 100%;
+        clear: both;
+    }
+    .container2 input {
+        width: 100%;
+        clear: both;
+    }
+    .container2 textarea {
+        resize:horizontal; max-width:800px; min-width:800px;
+    }
+
+    </style>
+
+
+{% endblock %}

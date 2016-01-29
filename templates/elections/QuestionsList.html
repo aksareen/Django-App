@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% block title %}
+Edit Questions
+{% endblock %}
+{% block extrahead %}
+
+{% load staticfiles %}
+<!-- Not used now
+<script src="{% static "jquery/jquery-2.1.4.min.js" %}"></script>
+<script src="{% static "bootstrap/js/bootstrap.min.js" %}"></script> -->
+
+{% endblock %}
+
+{% block content %}
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <center><font size="4">
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
+        {{ message }}
+    </li>
+</font></center>
+{% endfor %}
+</ul>
+{% endif %}
+
+<div class="container2">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="well well-sm">
+
+                <div class="questions">
+                    <ol>   
+                    {% for i in Questions_List %}
+                    <li>
+                        <font size="4">{{ i.text }}     <a href = "{% url 'elections:EditQuestion' election_slug=elections.slug question_id=i.qid %}">EDIT</a> </font> 
+                        <br><font size="2">Type : {{ i.type }}  </font>
+                        <br>
+                        <font size= " 4" >
+                            CHOICES
+                        </font>
+                        {% for j in i.candidates %}
+                        <ul>
+                            <li> {{ j }}
+                            </li>
+                        </ul>
+                        {% endfor %}
+                    </li>
+                    <br>
+                    {% endfor %}
+                </ol>
+            </div>
+
+
+            <div class="form-group">
+                <div class="col-md-12 text-center">
+                    <button type="submit"  id="addbutton" class="btn btn-primary btn-lg">ADD POLL</button>
+                    <script type="text/javascript">
+                    document.getElementById("addbutton").onclick = function () {
+                        location.href = "{% url 'elections:CreateQuestion' election_slug=elections.slug %}";
+                    };
+                    </script>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-12 text-center">
+                    <button type="submit"  id="cancelbutton" class="btn btn-primary btn-lg">Cancel</button>
+                    <script type="text/javascript">
+                    document.getElementById("cancelbutton").onclick = function () {
+                        location.href = "{% url 'users:dashboard' %}";
+                    };
+                    </script>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-12 text-center">
+                    <button type="submit"  id="nextbutton" class="btn btn-primary btn-lg">Next</button>
+                    <script type="text/javascript">
+                    document.getElementById("nextbutton").onclick = function () {
+                        location.href = "{% url 'elections:EditElection' election_slug=elections.slug edit_id=EditNumberNext %}";
+                    };
+                    </script>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-12 text-center">
+                    <button type="submit"  id="prevbutton" class="btn btn-primary btn-lg">Previous</button>
+                    <script type="text/javascript">
+                    document.getElementById("prevbutton").onclick = function () {
+                        location.href = "{% url 'elections:EditElection' election_slug=elections.slug edit_id=EditNumberPrevious %}";
+                    };
+                    </script>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+</div>
+
+<style type="text/css">
+.container2 {
+    width: 100%;
+    clear: both;
+}
+.container2 input {
+    width: 100%;
+    clear: both;
+}
+.container2 textarea {
+    resize:horizontal; max-width:800px; min-width:800px;
+}
+
+.questions {
+  text-shadow: none;
+
+}
+</style>
+
+
+{% endblock %}

@@ -1,0 +1,11 @@
+Contact Name:
+{{ fname }} {{ lname }}
+
+Email:
+{{ email }}
+
+Phone:
+{{ phone }}
+
+Content:
+{{ message|safe|striptags }}

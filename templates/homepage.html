@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}iVote{% endblock %}
+{%block extrahead %}
+
+{% endblock %}
+{% block content %}
+{% load staticfiles %}
+ {% if messages %}
+        <center>
+            <ul class="messages">
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        </center>
+        {% endif %}
+
+    <!-- Image Background Page Header -->
+    <!-- Note: The background image is set within the business-casual.css file. -->
+    <header class="business-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="tagline">Hello {{ user.get_short_name|default:"User" }}</h1>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Content -->
+    <div class="container">
+
+        <hr>
+
+        <div class="row">
+            <div class="col-sm-8">
+                <h2>What We Do</h2>
+                <p>Online Voting App with low quality front -end design.</p>
+                <p>
+                    <a class="btn btn-default btn-lg" href="#">Call to Action &raquo;</a>
+                </p>
+            </div>
+            <div class="col-sm-4">
+                <h2>Contact Us</h2>
+                <address>
+                    <strong>iVote</strong>
+                    <br>F-425
+                    <br>Men's Hostel VIT
+                    <br>
+                </address>
+                <address>
+                    <abbr title="Phone">P:</abbr>+91 9787118041
+                    <br>
+                    <abbr title="Email">E:</abbr> <a href="mailto:ashish.sareen2013@vit.ac.in">ashish.sareen2013@vit.ac.in</a>
+                </address>
+            </div>
+        </div>
+
+        <!-- /.row -->
+
+        <hr>
+
+        <!-- Footer -->
+
+    </div>
+        <style>
+        .business-header{
+            height: 400px;
+            background: url("{% static 'images/vote2.jpg' %}");
+            background-position: center;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            background-size: cover;
+            -o-background-size: cover;
+            margin: 0 auto;
+        }
+    </style>
+{% endblock %}

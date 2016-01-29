@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block title %}Contact Us{% endblock %}
+{% block extrahead %}
+<script src='https://www.google.com/recaptcha/api.js?hl=en'></script>
+{% endblock %}
+{% block content %}
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <center><font size="5">
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
+        {{ message }}
+    </li>
+    </font></center>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="well well-sm">
+                <form id="contactform" class="form-horizontal" method="post" action="{% url 'contact_us' %}">
+                     {% csrf_token %}
+                    <fieldset>
+                        <legend class="text-center header">Contact Us</legend>
+                        {% if Error %}
+                        <h4 align='center'><strong> {{Error}} </strong></h4>
+                        {% endif %}
+
+                        {% if form.errors %}
+                        {% for field in form %}
+                        {% for error in field.errors %}
+                        <h4 align='center'> {{ error }} </h4>
+                        {% endfor %}
+                        {% endfor %}
+                        {% endif %}
+
+                        {% for field in form %}
+                        <div class="form-group">
+                            <span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-user bigicon"></i></span>
+                            <div class="col-md-8">
+                            {{ field }} 
+                            </div>
+                        </div>
+                        {% endfor %}
+                        <div class="form-group">
+                            <span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-pencil-square-o bigicon"></i></span>
+                            <div class="col-md-8">
+                               <div class="g-recaptcha" data-sitekey="6LcmmgwTAAAAAAjTdm709wN2xlBzAgND9hMPQnpU"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12 text-center">
+                                <button id="ContactSubmit" type="submit" onclick="submitted()" class="btn btn-primary btn-lg">Submit</button>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% load staticfiles %}
+<script src="{% static 'jquery/blockui.js' %}"></script>
+<script type="text/javascript">
+$(document).ready(function() { 
+    $('#ContactSubmit').click(function() { 
+        $.blockUI({ css: { 
+            border: 'none', 
+            padding: '15px', 
+            backgroundColor: '#000', 
+            '-webkit-border-radius': '10px', 
+            '-moz-border-radius': '10px', 
+            opacity: .5, 
+            color: '#fff' 
+        } }); 
+ 
+        $('.blockOverlay').attr('title','Click to unblock').click($.unblockUI);
+    }); 
+});
+
+</script>
+
+
+{% endblock %}

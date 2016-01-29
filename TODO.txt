@@ -1,0 +1,45 @@
+TODO
+------------------------------------------------------------------------------------------------
+VIP 
+Hosting with all dependencies
+
+VIP
+Caching at specific parts
+
+VIP
+Scripts in header maybe slowing down the page , wanna put in bottom of file and test them
+
+Future
+Multi-Factor Authentication for Microsoft Accounts
+
+Django All auth
+Maybe dynamic querysets
+
+Email handler
+
+Email verifier
+
+Captcha google chrome (Replace)
+
+Cron Job Django-mailer queue
+
+Signals
+
+
+
+Testing with IE.
+
+NosQL some other day
+
+CBVs in all Views. Next Project.
+
+
+Testing if JS disabled.
+
+Adding JS to all forms.
+Client-side validation of data
+----------------------------------------------------------------------------------------------
+Done
+
+AJAX TO KNOW AND CONVERT TIMEZONE DYNAMICALLY and Allow Time Accordingly (not exactly but robust)
+Add a button to set new timezone according to user's needs.

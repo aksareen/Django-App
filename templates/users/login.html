@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>iVote Login</title>
+    <meta name="generator" content="Bootply" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    {% load staticfiles %}
+        <script src="{% static "jquery/jquery-2.1.4.min.js" %}"></script>
+    <script src="{% static "bootstrap/js/bootstrap.min.js" %}"></script>
+    <link href="{% static "bootstrap/css/bootstrap.min.css" %}" rel="stylesheet">
+    <link href="{% static "bootstrap/custom/styles.css" %}" rel="stylesheet">
+
+        <!--[if lt IE 9]>
+      <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+<!--login modal-->
+<div id="loginModal" class="modal show" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+  <div class="modal-content">
+      <div class="modal-header">
+        {% if messages %}
+  <ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+          <h1 class="text-center">iVote Login</h1>
+      </div>
+      <div class="modal-body">
+          <form class="form col-md-12 center-block" name="loginform" accept-charset="UTF-8" enctype="application/x-www-form-urlencoded" method="post" action = "{% url 'user_login' %}">
+            <div class="form-group">
+              {% csrf_token %}
+              <input type="text" class="form-control input-lg" placeholder="Username" name ="username" required >
+            </div>
+            <div class="form-group">
+              <input type="password" class="form-control input-lg" placeholder="Password" name = "password" required >
+            </div>
+            <div class="form-group">
+              <button id="Signin" class="btn btn-primary btn-lg btn-block">Sign In</button>
+              <span class="pull-right"><a href="{% url 'users:signup_form' %}">Register</a></span><span><a href="#">Forgot Password?</a></span>
+            </div>
+          </form>
+      </div>
+      <div class="modal-footer">
+          <div class="col-md-12">
+          <button class="btn" data-dismiss="modal" id="cancelbutton" aria-hidden="true">Cancel</button>
+          <script type="text/javascript">
+     document.getElementById("cancelbutton").onclick = function () {
+        location.href = "{% url 'homepage' %}";
+    };
+  </script>
+      </div>  
+      </div>
+  </div>
+  </div>
+</div>
+
+{% load staticfiles %}
+<script src="{% static 'jquery/blockui.js' %}"></script>
+<script type="text/javascript">
+$(document).ready(function() { 
+    $('#Signin').click(function() { 
+        $.blockUI({ css: { 
+            border: 'none', 
+            padding: '15px', 
+            backgroundColor: '#000', 
+            '-webkit-border-radius': '10px', 
+            '-moz-border-radius': '10px', 
+            opacity: .5, 
+            color: '#fff' 
+        } }); 
+        setTimeout($.unblockUI, 2000); 
+    }); 
+});
+
+</script>
+  <!-- script references -->
+
+  </body>
+</html>

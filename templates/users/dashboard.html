@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}{{ user.get_full_name }}{% endblock %}
+{% block content %}
+{% if messages %}
+
+<ul class="messages">
+    {% for message in messages %}
+    <center><font size="5">
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}{% endif %}
+        {{ message }}
+    </li>
+</font></center>
+{% endfor %}
+</ul>
+{% endif %}
+
+{% if user.is_authenticated %}
+<h3> This is your dashboard {{user.username}} </h3>
+<br>
+<h3><a href="{% url 'elections:CreateElection' %}">Create Election</a></h3>
+<h3><a href="{% url 'elections:CreateElection' %}">Manage Present and Upcoming Elections</a></h3>
+<h3><a href="{% url 'elections:CreateElection' %}">Election History</a></h3>
+<br>
+{% for elections in user.election_set.all %}
+    <h4>
+    <l1> 
+       <a href="{% url 'elections:EditElection' election_slug=elections.slug edit_id=1 %}"> {{ elections.name }} </a>
+       <a href="{% url 'elections:ActivateElection' election_slug=elections.slug %}"> Activate</a> 
+    </li>
+    </h4>
+{% endfor %}
+<br>
+{% if user.verified_email %}
+<h3> email verified </h3>
+{% else %}
+<h3> email NOT verified.Please Verify your email before Attempting to manage your elections </h3>
+{% endif %}
+
+{% endif %}
+
+
+
+{% endblock %}
+

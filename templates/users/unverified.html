@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Access Denied{% endblock %}
+{% block content %}
+{% if not user.verified_email %}
+<h2>  Acess Denied.</h2>
+<h3>Your email id : {{ user.email }} hasn't been verified yet.</h2>
+<br>
+<h4> Please <a href ="{% url 'users:verify_email' %}" >click on this link</a> to verify your email
+{% else %}
+<h1> Email Already Verified. Click here to go to your <a href ="{% url 'users:dashboard' %}" >Dashboard</a>
+{% endif %}
+{% endblock %}

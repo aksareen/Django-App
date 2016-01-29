@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+{% block title %}
+
+{% if EditForm %}
+Edit {{ elections.name }} Polls
+{% else %}
+Add {{ elections.name }} Polls
+{% endif %}
+
+{% endblock %}
+{% block extrahead %}
+{% endblock %}
+
+{% block content %}
+{% load staticfiles %}
+
+{% if messages %}
+<center>
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+</center>
+{% endif %}
+<div class="container2">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="well well-sm">
+                {% if EditForm %}
+                <form id="questionEditform" class="form-horizontal" method="post" action="{% url 'elections:EditQuestion' election_slug=elections.slug question_id=questions.qid %}">
+                    {% else %}
+                    <form id="questionaddform" class="form-horizontal" method="post" action="{% url 'elections:CreateQuestion' election_slug=elections.slug %}">
+                {% endif %}
+                        {% csrf_token %}
+                        <fieldset>
+                            {% if EditForm %}
+                            <legend class="text-center header">Edit Poll</legend>
+                            {% else %}
+                            <legend class="text-center header">Add a Poll</legend>
+                            {% endif %}
+                            {% for err in QuestionForm.non_field_errors %}
+                            <div class="form_error_message">{{ err|escape }}</div>
+                            {% endfor %}         
+                            {% for field in QuestionForm %}
+                            <div class="form-group">
+                                <span class="col-md-1 col-md-offset-2 text-center"></span>
+                                <div class="col-md-8">
+                                    {{ field.label }}  :  {{ field }} 
+                                    {% for err in field.errors %}
+                                    <font size="3" color="red">
+                                        {{ err }}
+                                    </font>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {% endfor %}
+                            <br>           
+                            <legend class="text-center header">Choices</legend>
+                            <legend class="text-center header"><font size="2">(Minimum 2)</font></legend>
+                            <div class="choicecontainer">
+                                {% if CandidateFormset.non_form_errors %}
+                                {% for error in CandidateFormset.non_form_errors %}
+                                <div class="form_error_message"><font size="3" color = "red">{{ error|escape }}</font></div>
+                                {% endfor %}
+                                {% endif %}
+                                <br>
+                                {{ CandidateFormset.management_form }}
+                                <table>
+                                   <tbody>
+                                    {% for form in CandidateFormset %}
+
+                                    <tr> <td>{{ form.name.help_text }} : {{ form.name }}</td>
+                                        <td> {{ form.description.help_text }} : {{ form.description }}</td>
+                                        {% if form.instance.pk %}
+                                        <td><font size = "3"> Mark for Deletion : {{ form.DELETE }}</font></td>
+                                        {% endif %}
+                                    </tr>
+                                    {% for hidden in form.hidden_fields %}
+                                    {{ hidden }}
+                                    {% endfor %}    
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12 text-center">
+                                <button type="submit" name="SaveButton" id="SaveButton" class="btn btn-primary btn-lg">Save</button>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+
+                {% if EditForm %}
+                <form id="questiondeleteform" class="form-horizontal" method="post" action="{% url 'elections:EditQuestion' election_slug=elections.slug question_id=questions.qid %}">
+                    {% csrf_token %}
+                    <fieldset>
+                        <div class="form-group">
+                            <div class="col-md-12 text-center">
+                                <button type="submit" name="Deletebutton" id="Deletebutton" Onclick="ConfirmDelete()" class="btn btn-primary btn-lg" >Delete</button>
+                                <script type="text/javascript">
+                                function ConfirmDelete()
+                                {
+                                    var x = confirm("Are you sure you want to delete this Question ?");
+                                    if (x)
+                                      return true;
+                                  else
+                                    return false;
+                            }
+
+                            </script>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+            {% endif %}
+
+            <div class="form-group">
+                <div class="col-md-12 text-center">
+                    <button type="submit"  id="cancelbutton" class="btn btn-primary btn-lg">Cancel</button>
+                    <script type="text/javascript">
+                    document.getElementById("cancelbutton").onclick = function () {
+                        location.href = "{% url 'elections:EditElection' election_slug=elections.slug edit_id=EditNumber %}";
+                    };
+                    </script>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+</div>
+</div>
+
+<!-- CUSTOM CSS CLASS additions  -->
+
+<script src="{% static 'jquery/jquery.formset.js' %}"></script>
+{% if EditForm %}
+<script type="text/javascript">
+$(function() {
+    $('#questionEditform tbody tr').formset({
+        prefix: '{{ CandidateFormset.prefix }}',
+        addText: 'Add Choice',
+        deleteText: 'Delete'
+    });
+})
+</script>
+{% else %}
+<script type="text/javascript">
+$(function() {
+    $('#questionaddform tbody tr').formset({
+        prefix: '{{ CandidateFormset.prefix }}',
+        addText: 'Add Choice',
+        deleteText: 'Delete'
+    });
+})
+</script>
+{% endif %}
+
+<style type="text/css">
+.container2 {
+    width: 100%;
+    clear: both;
+}
+.container2 input {
+    width: 100%;
+    clear: both;
+}
+.container2 textarea {
+    resize:horizontal; max-width:800px; min-width:800px;
+}
+
+.choicecontainer input {
+    width: 50%;
+    clear: both;
+}
+
+
+</style>
+
+
+{% endblock %}
